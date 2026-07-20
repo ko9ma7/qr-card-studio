@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="주소, 연락처, Wi-Fi 등의 정보를 QR 코드로 만들고 PNG·SVG로 저장하는 무료 브라우저 도구입니다.">
+  <meta name="theme-color" content="#f6f7fb">
+  <title>QR Card Studio | 명함·업무용 QR 코드 만들기</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="vendor/qrcode.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#workspace">본문으로 건너뛰기</a>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="QR Card Studio 홈">
+      <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      <span><strong>QR Card</strong><small>STUDIO</small></span>
+    </a>
+    <div class="top-actions">
+      <span class="privacy-badge">입력 정보는 서버로 전송하지 않아요</span>
+      <button class="icon-button" id="themeToggle" type="button" aria-label="어두운 화면으로 전환" title="화면 테마 전환">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.4 0-.8-.1-1.2A7 7 0 0 1 13.2 3H12Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="shell" id="workspace">
+    <section class="intro" aria-labelledby="pageTitle">
+      <p class="eyebrow">FREE BROWSER TOOL</p>
+      <h1 id="pageTitle">필요한 정보만 담아<br><span>나만의 QR 코드</span>를 만드세요.</h1>
+      <p>회원가입 없이 입력하고, 디자인한 뒤 PNG 또는 SVG로 저장하세요. 모든 작업은 현재 브라우저 안에서 처리됩니다.</p>
+    </section>
+
+    <div class="app-layout">
+      <section class="maker-card" aria-labelledby="makerTitle">
+        <div class="card-heading">
+          <div><span class="step">STEP 1</span><h2 id="makerTitle">QR에 담을 정보</h2></div>
+          <button class="text-button" id="fillSample" type="button">예시 채우기</button>
+        </div>
+
+        <div class="type-tabs" id="typeTabs" role="tablist" aria-label="QR 정보 종류">
+          <button type="button" role="tab" aria-selected="true" class="type-tab active" data-type="url">웹사이트</button>
+          <button type="button" role="tab" aria-selected="false" class="type-tab" data-type="vcard">연락처 명함</button>
+          <button type="button" role="tab" aria-selected="false" class="type-tab" data-type="text">일반 텍스트</button>
+          <button type="button" role="tab" aria-selected="false" class="type-tab" data-type="email">이메일</button>
+          <button type="button" role="tab" aria-selected="false" class="type-tab" data-type="sms">문자</button>
+          <button type="button" role="tab" aria-selected="false" class="type-tab" data-type="wifi">Wi-Fi</button>
+          <button type="button" role="tab" aria-selected="false" class="type-tab" data-type="kakao">카카오톡</button>
+          <button type="button" role="tab" aria-selected="false" class="type-tab" data-type="whatsapp">WhatsApp</button>
+          <button type="button" role="tab" aria-selected="false" class="type-tab" data-type="youtube">YouTube</button>
+          <button type="button" role="tab" aria-selected="false" class="type-tab" data-type="geo">위치</button>
+          <button type="button" role="tab" aria-selected="false" class="type-tab" data-type="event">일정</button>
+          <button type="button" role="tab" aria-selected="false" class="type-tab" data-type="crypto">암호화폐</button>
+        </div>
+
+        <form id="qrForm" novalidate>
+          <div class="form-panel" id="dynamicFields" role="tabpanel"></div>
+          <p class="field-message" id="fieldMessage" aria-live="polite"></p>
+        </form>
+
+        <div class="section-divider"></div>
+        <div class="card-heading compact"><div><span class="step">STEP 2</span><h2>모양과 색상</h2></div></div>
+        <div class="design-grid">
+          <div class="field">
+            <label for="patternStyle">점 모양</label>
+            <select id="patternStyle"><option value="square">기본 사각형</option><option value="rounded">둥근 사각형</option><option value="dot">원형 점</option></select>
+          </div>
+          <div class="field">
+            <label for="frameStyle">프레임</label>
+            <select id="frameStyle"><option value="none">프레임 없음</option><option value="label">안내 문구</option><option value="card">명함 카드</option></select>
+          </div>
+          <div class="field color-field"><label for="fgColor">QR 색상</label><div><input id="fgColor" type="color" value="#172554"><output for="fgColor">#172554</output></div></div>
+          <div class="field color-field"><label for="bgColor">배경 색상</label><div><input id="bgColor" type="color" value="#ffffff"><output for="bgColor">#FFFFFF</output></div></div>
+          <div class="field span-2" id="frameTextField" hidden><label for="frameText">프레임 문구</label><input id="frameText" maxlength="24" value="SCAN TO CONNECT"></div>
+          <div class="field span-2">
+            <label for="logoUpload">가운데 로고 <span>(선택, 1MB 이하)</span></label>
+            <div class="file-control">
+              <input id="logoUpload" class="visually-hidden" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+              <button id="chooseLogo" class="secondary-button" type="button">이미지 선택</button>
+              <span id="logoName">선택된 이미지 없음</span>
+              <button id="clearLogo" class="text-button danger" type="button" hidden>삭제</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="preview-card" aria-labelledby="previewTitle">
+        <div class="preview-heading"><div><span class="step">PREVIEW</span><h2 id="previewTitle">실시간 미리보기</h2></div><span class="status" id="statusBadge">입력 대기</span></div>
+        <div class="qr-stage" id="qrStage">
+          <div id="qrOutput" aria-label="생성된 QR 코드 미리보기"></div>
+          <div class="empty-state" id="emptyState">
+            <span class="empty-mark" aria-hidden="true"></span>
+            <strong>정보를 입력해 주세요</strong>
+            <p>입력하는 즉시 QR 코드가 나타납니다.</p>
+          </div>
+        </div>
+        <p class="scan-tip">저장하기 전에 휴대폰 카메라로 화면의 QR 코드를 직접 스캔해 확인하세요.</p>
+        <div class="download-grid">
+          <button class="primary-button" id="downloadPng" type="button" disabled>PNG 저장</button>
+          <button class="secondary-button" id="downloadSvg" type="button" disabled>SVG 저장</button>
+        </div>
+        <button class="ghost-button" id="copyData" type="button" disabled>QR에 담긴 내용 복사</button>
+        <button class="reset-button" id="resetAll" type="button">입력과 디자인 초기화</button>
+      </aside>
+    </div>
+
+    <section class="guide" aria-labelledby="guideTitle">
+      <p class="eyebrow">HOW TO USE</p><h2 id="guideTitle">세 단계면 충분합니다.</h2>
+      <ol><li><strong>정보 선택</strong><span>웹 주소, 명함, Wi-Fi 등 필요한 종류를 고릅니다.</span></li><li><strong>디자인 조정</strong><span>색상과 모양을 바꾸고 필요하면 로고를 넣습니다.</span></li><li><strong>스캔 확인 후 저장</strong><span>휴대폰으로 시험한 뒤 PNG나 SVG를 내려받습니다.</span></li></ol>
+    </section>
+  </main>
+  <footer><p>QR Card Studio · 브라우저에서 동작하는 정적 웹 도구</p><p>중요 정보나 결제 주소는 저장 전 반드시 직접 확인하세요.</p></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

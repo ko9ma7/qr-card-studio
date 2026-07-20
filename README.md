@@ -4,6 +4,8 @@
 
 **바로 사용하기:** https://ko9ma7.github.io/qr-card-studio/
 
+**네이버 블로그 복사용 원고:** https://ko9ma7.github.io/qr-card-studio/blog/
+
 ## 특징
 
 - 회원가입과 서버 없이 브라우저 안에서 QR 생성
